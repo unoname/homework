@@ -1,0 +1,14 @@
+{
+  "name": "homework",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./homework_1/task_1.js",
+	"type": "module",
+  "scripts": {
+		"start": "node ./homework_1/task_1.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
