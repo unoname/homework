@@ -54,8 +54,8 @@ export class Calculator {
     }
     function isBiggestNum(num1, num2) {
       for (let i = 0; i < num1.length; i++) {
-        if (num1[i].charCodeAt() > num1[i].charCodeAt()) return true;
-        if (num1[i].charCodeAt() > num1[i].charCodeAt()) continue;
+        if (num1[i].charCodeAt() > num2[i].charCodeAt()) return true;
+        if (num1[i].charCodeAt() > num2[i].charCodeAt()) continue;
         return false;
       }
     }
@@ -107,42 +107,24 @@ export class Calculator {
     return +num1 / +num2;
   }
   multiply(num1, num2) {
-    if (num1 == '0' || num2 == '0') return '0';
-    let operand1 = this.isNegative(num1)
-      ? num1.slice(1).split('').reverse()
-      : num1.split('').reverse();
-    let operand2 = this.isNegative(num2)
-      ? num2.slice(1).split('').reverse()
-      : num2.split('').reverse();
-    function resolve(operand1, operand2) {
-      let result = [];
-      let length =
-        operand1.length > operand2.length ? operand1.length : operand2.length;
-      for (let i = 0, d = 1; i < length; i++) {
-        if (i == 0) result[i] = +operand1[i] * +operand2[i];
-        else {
-          if (operand1[i] && operand2[i]) {
-            result[i] = +operand1[i] * +operand2[i] * 10 ** d;
-            d++;
-          } else {
-            result[i] = operand1[i]
-              ? +operand1.slice(i).join('') * 10 ** d
-              : +operand2.slice(i).join('') * 10 ** d;
-            break;
-          }
-        }
+    let a = this.isNegative(num1) ? num1.slice(1) : num1;
+    let b = this.isNegative(num2) ? num2.slice(1) : num2;
+    let sign =
+      (this.isNegative(num1) && this.isNegative(num2)) ||
+      (!this.isNegative(num1) && !this.isNegative(num2))
+        ? ''
+        : '-';
+    const result = Array(a.length + b.length).fill(0);
+    for (let i = a.length; i--; null) {
+      let carry = 0;
+      for (let j = b.length; j--; null) {
+        result[1 + i + j] += carry + a[i] * b[j];
+        carry = Math.floor(result[1 + i + j] / 10);
+        result[1 + i + j] = result[1 + i + j] % 10;
       }
-      console.log(result);
-      return result.reduce((acc, cur) => (acc += cur), 0);
+      result[i] += carry;
     }
-    if (
-      (!this.isNegative(num1) && !this.isNegative(num2)) ||
-      (this.isNegative(num1) && this.isNegative(num2))
-    ) {
-      return '' + resolve(operand1, operand2);
-    } else {
-      return '-' + resolve(operand1, operand2);
-    }
+    return sign + result.join('').replace(/^0*(\d)/, '$1');
   }
 
   isNegative(s) {
@@ -151,9 +133,11 @@ export class Calculator {
 }
 
 const calculator = new Calculator();
+console.log(calculator.add('793824932793793729', '932439247932'));
+console.log(calculator.sub('-211', '-392')); // 181
 console.log(
   calculator.multiply(
-    '6753465365365656536563565363356536356563625249',
-    '293432222233353245432543253245245234532452222248'
+    '-2234323299999999999999999999999999999999999999999',
+    '32343241324132432431243443243241324349'
   )
 );
