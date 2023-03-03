@@ -50,7 +50,10 @@ export class Calculator {
           diff = 0;
         }
       }
-      return result.reverse().join('');
+      return result
+        .reverse()
+        .join('')
+        .replace(/^0*(\d)/, '$1');
     }
 
     if (
@@ -125,9 +128,12 @@ export class Calculator {
       temp = (temp % b) * 10 + a[idx].charCodeAt(0) - '0'.charCodeAt(0);
       idx += 1;
     }
-
     result += String.fromCharCode(Math.floor(temp / b) + '0'.charCodeAt(0));
-    return sign + result;
+    console.log(this.multiply(result, b));
+
+    const rest = this.sub(a, this.multiply(result, b));
+
+    return `Результат деления: ${sign + result} остаток: ${rest}`;
   }
   multiply(num1, num2) {
     let a = this.isNegative(num1) ? num1.slice(1) : num1;
@@ -177,4 +183,4 @@ console.log(
     '1122222222222222222222222222222222222222222222222222222222222222',
     '112222222222222222222222222222222222222222222'
   )
-); // 10000000000000000000
+); // 10000000000000000000 Остаток: 2222222222222222222
